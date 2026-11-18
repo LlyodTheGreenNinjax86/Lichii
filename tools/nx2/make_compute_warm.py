@@ -64,6 +64,7 @@ def read_override(path):
     header, or an address map that points past the instructions or goes backwards
     (DecodeProgramOverride).
     """
+
     data = Path(path).read_bytes()
     magic, version, source_size, count, texture_buffer, map_count = struct.unpack_from('<6I', data)
     if magic != 0x4E454445 or version != 0x3230564F or map_count != source_size // 16:
@@ -77,6 +78,7 @@ def read_override(path):
     if any(offset >= count for offset in offsets) or any(
             left > right for left, right in zip(offsets, offsets[1:])):
         raise ValueError(f'{path}: invalid override address map')
+
     return instructions, offsets, texture_buffer
 
 
@@ -127,6 +129,7 @@ def main():
                 record.unlink(missing_ok=True)
         if not record.exists():
             # A hung or unstartable sweep counts as a failed program instead of stopping the run.
+
             try:
                 subprocess.run([args.sweep, str(corpus / program['code']), '--capture-extent',
                                 '--lower-only', str(work / f"{program['code_sha256']}.words"),
@@ -155,6 +158,7 @@ def main():
                 failed += 1
                 continue
             data, key = entry(code, workgroup, shared, local, texture_buffer)
+
         except (ValueError, struct.error, OSError, KeyError) as ex:
             print(f"{program['code_sha256']}: {type(ex).__name__}: {ex}", file=sys.stderr)
             failed += 1

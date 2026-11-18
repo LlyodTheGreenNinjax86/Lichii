@@ -1392,14 +1392,15 @@ int main(int argc, char** argv) {
                 guesses.cbuf0 = ParseOptionValue(arg, value, 16, std::numeric_limits<u32>::max());
             else if (arg == "--guess-cbuf-other")
                 guesses.cbuf_other =
-                    ParseOptionValue(arg, value, 16, std::numeric_limits<u32>::max());
+                ParseOptionValue(arg, value, 16, std::numeric_limits<u32>::max());
             else if (arg == "--guess-texture-type")
                 guesses.texture_type =
-                    ParseOptionValue(arg, value, 0, Shader::NUM_TEXTURE_TYPES - 1);
+                ParseOptionValue(arg, value, 0, Shader::NUM_TEXTURE_TYPES - 1);
             else if (arg == "--guess-pixel-format")
                 guesses.pixel_format =
-                    ParseOptionValue(arg, value, 0, std::numeric_limits<u8>::max());
+                ParseOptionValue(arg, value, 0, std::numeric_limits<u8>::max());
             else if (arg == "--guess-storage-pointer") {
+
                 if (value != "0" && value != "1")
                     throw std::runtime_error("Expected --guess-storage-pointer 0 or 1");
                 guesses.storage_pointer = value == "1";
@@ -1606,6 +1607,7 @@ int main(int argc, char** argv) {
             // (the tools/nx2/make_*_warm.py scripts read it).
             diagnostic["native_key"] =
                 fmt::format("{:016x}", Shader::Ampere::NativeProgramKey(native));
+
             if (!override_out.empty()) {
                 const auto record = Shader::Ampere::EncodeProgramOverride(native, lowered);
                 if (record.empty())
@@ -1614,12 +1616,13 @@ int main(int argc, char** argv) {
                 // (shader_environment.cpp) would refuse them as an override.
                 diagnostic["override_within_emulator_limits"] =
                     Shader::Ampere::ProgramOverrideSourceSize(record) != 0 &&
-                    record.size() <= size_t{16} * 1024 * 1024;
+                    record.size() <= size_t{ 16 } * 1024 * 1024;
                 // Renamed into place once complete, so a reader never sees a partial record.
                 auto partial = override_out;
                 partial += ".partial";
                 WriteFile(partial, record);
                 std::filesystem::rename(partial, override_out);
+
             }
             if (lower_only) {
                 diagnostic["phase"] = "output";

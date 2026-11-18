@@ -15,6 +15,8 @@ add_executable(tests
     video_core/frame_dump_decode.cpp
     video_core/frame_gen_generations.cpp
     video_core/frame_pacer.cpp
+    video_core/spirv_inline_control.cpp
+
     video_core/nx2_stutter_trace.cpp
     video_core/back_idle_trace.cpp
     video_core/list_macro_trace.cpp
@@ -134,6 +136,7 @@ add_executable(tests
     video_core/bounded_store.cpp
     video_core/pipeline_eviction_policy.cpp
     video_core/async_shader_emission.cpp
+    video_core/graphics_pipeline_library_policy.cpp
     video_core/oot_network.cpp
     video_core/page_filter.cpp
     video_core/query_stream.cpp
